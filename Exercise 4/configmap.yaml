@@ -1,0 +1,14 @@
+- hosts: localhost
+
+  tasks:
+    - name: create configmap
+      k8s:
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: configmap-ans
+            namespace: default
+          data:
+             config.json: |-
+          {{ .Files.Get "config.json"}}
