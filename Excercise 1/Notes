@@ -1,0 +1,13 @@
+A docker container is created on the VM using the image 'HTTPD'.
+The volume is binded to host to display the metrics using the URL:
+http://20.106.171.98/metrics_log.txt
+
+# Docker HTTPD Container
+docker run -d --name=appa -v /home/ubuntuVM1/Tribhi-1:/usr/local/apache2/htdocs httpd
+
+# Script with cron
+The bash script that outputs the metrics is stored in file metrics.sh
+A cron is trigerred to output the shell output to a text file.
+
+# Cron tab details
+0 */2 * * * /bin/bash /home/ubuntu/Tribhi-1/metrics.sh
