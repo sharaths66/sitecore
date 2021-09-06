@@ -1,0 +1,19 @@
+Method 1:
+---------
+# Create custom network
+docker network create elast_network
+# Create elastic search container and link to the network.
+docker container run -d --name=search1 --net elast_network --net-alias search elasticsearch:2
+docker container run -d --name=search2 --net elast_network --net-alias search elasticsearch:2
+
+# Testing 1:
+docker container run --rm --net elast_network centos curl -s search:9200
+# Testing 2:
+docker container run --rm --net elast_network alpine nslookup search.
+
+
+Method 2:
+---------
+docker run --health-cmd="curl -f localhost:9200/_cluster/health || false" --health-interval=5s --health-retries=3 --health-timeout=2s --health-start-period=15s elasticsearch:2
+
+
