@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+      name: dfs46
+	  services:
+        - name: worker
+          resources:
+            cpu: 4
+            ram: 8
+          environment:
+            THREAD_COUNT: 8
+        - name: ui
+          uiconfig:
+            modules:
+              - core
+              - api
+              - web
+            users:
+              - user: administrator
+                permissions:
+                 - admin
+              - user: user1
+                permissions: []
+              - user: user2
+                permissions: []
+
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+      name: nnp44
+	  services:
+        - name: worker
+        - name: vision
+        - name: ui
+          resources:
+            ram: 2
+          uiconfig:
+            modules:
+              - core
+              - api
+              - web
+              - web-api
+            users:
+              - user: administrator
+            permissions:
+              - admin
