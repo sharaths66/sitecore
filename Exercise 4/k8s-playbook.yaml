@@ -1,0 +1,52 @@
+	
+- hosts: localhost
+  gather_facts: false
+# Create Kubernetes Deployment
+    - name: Create k8s Deployment
+      k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: hello-go
+            namespace: default
+          spec:
+            replicas: 2
+            selector:
+              matchLabels:
+                app: hello-go
+            template:
+              metadata:
+                labels:
+                  app: hello-go
+              spec:
+                containers:
+                - name: hello-go
+                  image: nginx
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                  - containerPort: 8180
+				  volumeMounts:
+                    - name: config-mv
+                      mountPath: /etc/ui/config.json
+	            volumes:
+                    - name: config
+                      configMap:
+                        name: configmap-ans
+# Create Kubernetes Service
+    - name: Create a Service for Hello Go sample app.
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: hello-go
+          spec:
+            type: LoadBalancer
+            ports:
+            - port: 8180
+              targetPort: 8180
+            selector:
+              app: hello-go
